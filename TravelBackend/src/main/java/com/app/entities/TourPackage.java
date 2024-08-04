@@ -18,7 +18,7 @@ public class TourPackage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pkgId;
     private String pname;
-    private String desc;
+    private String description;
     private Double price;
     private Integer duration;
     private LocalDate startDate;
