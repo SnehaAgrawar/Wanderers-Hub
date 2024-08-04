@@ -1,6 +1,8 @@
 package com.app.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,7 +22,8 @@ public class User {
     private String uname;
     private String password;
     private String contactNo;
-    private String userType;
+    @Enumerated(EnumType.STRING)
+    private UserType userType;
     private String address;
 
     

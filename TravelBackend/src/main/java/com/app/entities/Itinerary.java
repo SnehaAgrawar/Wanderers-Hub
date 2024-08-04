@@ -18,7 +18,7 @@ public class Itinerary {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long itineraryId;
 	private Integer day;
-	private String desc;
+	private String description;
 	private String location;
 
 	@ManyToOne
