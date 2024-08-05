@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
 	UserRepository userRepository;
 
 	@Override
-<<<<<<< HEAD
+
 	public User registerUser(User user) {
 		userRepository.save(user);
 		return user;
@@ -39,12 +39,11 @@ public class UserServiceImpl implements UserService {
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
 	}
-=======
+
 	public User getUser(Long uid) {
 		User user = userRepository.findById(uid).orElseThrow(()-> 
 			new ResponseStatusException(HttpStatus.NOT_FOUND,"invalid id"));
 		return user;
 	}
->>>>>>> 7e25a3484827d3d194822642b9b10d7efdbd0f05
 
 }
