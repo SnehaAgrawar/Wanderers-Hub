@@ -39,18 +39,10 @@ public class UserServiceImpl implements UserService {
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
 	}
-<<<<<<< HEAD
-=======
-
->>>>>>> 858d20e8f28421503183eac393a73840fbd5f8d7
+	@Override
 	public User getUser(Long uid) {
 		User user = userRepository.findById(uid).orElseThrow(()-> 
 			new ResponseStatusException(HttpStatus.NOT_FOUND,"invalid id"));
 		return user;
 	}
-<<<<<<< HEAD
-
-=======
->>>>>>> 858d20e8f28421503183eac393a73840fbd5f8d7
-
 }
