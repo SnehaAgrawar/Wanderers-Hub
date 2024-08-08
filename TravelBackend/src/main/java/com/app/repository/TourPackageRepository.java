@@ -9,6 +9,6 @@ import com.app.entities.TourPackage;
 @Repository
 public interface TourPackageRepository extends JpaRepository<TourPackage, Long> {
 	
-	List<TourPackage> findAllByName(String name);
+	List<TourPackage> findAllByPname(String name);
 
 }
