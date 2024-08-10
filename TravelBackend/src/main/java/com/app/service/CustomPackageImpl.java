@@ -12,7 +12,7 @@ import com.app.repository.CustomPackageRepository;
 import com.app.repository.DestinationRepository;
 
 @Service
-public class CustomPackageImpl implements CustomPackage {
+public class CustomPackageImpl implements CustomPackageService {
 
     @Autowired
     private CustomPackageRepository customPackageRepository;
