@@ -35,7 +35,7 @@ public class TourPackageImpl implements TourPackageSevice {
 
 	@Override
 	public List<TourPackage> getByName(String name) {
-		return tourPackageRepository.findAllByName(name);
+		return tourPackageRepository.findAllByPname(name);
 	}
 
 	@Override

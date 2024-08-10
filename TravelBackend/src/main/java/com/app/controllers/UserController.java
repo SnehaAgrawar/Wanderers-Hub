@@ -34,8 +34,8 @@ public class UserController {
 		return userService.registerUser(user);
 	}
 
-	@GetMapping
-	public User getUser(@RequestParam Long uid) {
+	@GetMapping("{uid}")
+	public User getUser(@PathVariable Long uid) {
 		return userService.getUser(uid);
 	}
 	
