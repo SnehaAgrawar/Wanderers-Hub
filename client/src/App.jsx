@@ -1,14 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import Header from './components/Header';
-<<<<<<< HEAD
-import Footer from './components/Footer';
-=======
 import About from './pages/About';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
->>>>>>> 1047610fc564d912fbed8b2caf93ffc965b26976
+import About from './pages/About';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 
 function App() {
   return (
