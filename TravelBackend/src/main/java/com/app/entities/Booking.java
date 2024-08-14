@@ -3,6 +3,7 @@ package com.app.entities;
 import java.sql.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,12 +28,12 @@ public class Booking {
     @JoinColumn(name = "userId", nullable = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "pkgId", nullable = false)
     private TourPackage tourPackage;
 
-    @ManyToOne
-    @JoinColumn(name = "customPkgId", nullable = true)
-    private CustomPackage customPackage;
+//    @ManyToOne
+//    @JoinColumn(name = "customPkgId", nullable = true)
+//    private CustomPackage customPackage;
 
 }

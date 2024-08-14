@@ -38,13 +38,13 @@ public class TourPackageController {
 		return tourPackageSevice.getByName(name);
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/get/{id}")
 	public TourPackage getById(@PathVariable Long id)
 	{
 		return tourPackageSevice.getById(id);
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/delete/{id}")
 	public String deleteById(@PathVariable Long id)
 	{
 		return tourPackageSevice.deleteById(id);

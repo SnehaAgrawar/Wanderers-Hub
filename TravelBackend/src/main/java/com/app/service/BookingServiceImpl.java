@@ -1,58 +1,125 @@
 package com.app.service;
 
-import java.util.List;
-
-import javax.transaction.Transactional;
+import com.app.dto.BookingDTO;
+import com.app.entities.Booking;
+import com.app.entities.User;
+import com.app.entities.TourPackage;
+import com.app.entities.CustomPackage;
+import com.app.repository.BookingRepository;
+import com.app.repository.UserRepository;
+import com.app.repository.TourPackageRepository;
+import com.app.repository.CustomPackageRepository;
+import com.app.service.BookingService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import com.app.entities.Booking;
-import com.app.repository.BookingRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class BookingServiceImpl implements BookingService {
 
-	@Autowired
-	BookingRepository bookingRepository;
+    @Autowired
+    private BookingRepository bookingRepository;
 
-	@Override
-	public Booking addBooking(Booking booking) {
-		return bookingRepository.save(booking);
-	}
+    @Autowired
+    private UserRepository userRepository;
 
-	@Override
-	public List<Booking> getBookings() {
-		return bookingRepository.findAll();
-	}
+    @Autowired
+    private TourPackageRepository tourPackageRepository;
 
-	@Override
-	public Booking getBooking(Long bid) {
-		Booking booking = bookingRepository.findById(bid)
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "invalid id"));
-		return booking;
-	}
+    @Autowired
+    private CustomPackageRepository customPackageRepository;
 
-	@Override
-	public String deleteBooking(Long bid) {
-		if(bookingRepository.existsById(bid)) {
-			bookingRepository.deleteById(bid);
-			return "deleted";
-		}else {
-			return "deletion failed";
-		}
-	}
+    @Override
+    public BookingDTO createBooking(BookingDTO bookingDTO) {
+        Booking booking = new Booking();
+        booking.setBookingDate(bookingDTO.getBookingDate());
+        booking.setTotalCost(bookingDTO.getTotalCost());
+        booking.setStatus(bookingDTO.getStatus());
 
-	@Override
-	public Booking updateBooking(Long bid, Booking booking) {
-		if(bookingRepository.existsById(bid)) {
-			return bookingRepository.save(booking);
-		}else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND,"invalid id");
-		}
-	}
+        User user = userRepository.findById(bookingDTO.getUserId())
+                                  .orElseThrow(() -> new RuntimeException("User not found"));
+        booking.setUser(user);
 
+        TourPackage tourPackage = tourPackageRepository.findById(bookingDTO.getPkgId())
+                                                       .orElseThrow(() -> new RuntimeException("Package not found"));
+        booking.setTourPackage(tourPackage);
+
+//        if (bookingDTO.getCustomPkgId() != null) {
+//            CustomPackage customPackage = customPackageRepository.findById(bookingDTO.getCustomPkgId())
+//                                                                 .orElseThrow(() -> new RuntimeException("Custom Package not found"));
+//            booking.setCustomPackage(customPackage);
+//        }
+
+        Booking savedBooking = bookingRepository.save(booking);
+        bookingDTO.setBookingId(savedBooking.getBookingId());
+
+        return bookingDTO;
+    }
+
+    @Override
+    public BookingDTO updateBooking(Long id, BookingDTO bookingDTO) {
+        Booking booking = bookingRepository.findById(id)
+                                           .orElseThrow(() -> new RuntimeException("Booking not found"));
+
+        booking.setBookingDate(bookingDTO.getBookingDate());
+        booking.setTotalCost(bookingDTO.getTotalCost());
+        booking.setStatus(bookingDTO.getStatus());
+
+        User user = userRepository.findById(bookingDTO.getUserId())
+                                  .orElseThrow(() -> new RuntimeException("User not found"));
+        booking.setUser(user);
+
+        TourPackage tourPackage = tourPackageRepository.findById(bookingDTO.getPkgId())
+                                                       .orElseThrow(() -> new RuntimeException("Package not found"));
+        booking.setTourPackage(tourPackage);
+
+		/*
+		 * if (bookingDTO.getCustomPkgId() != null) { CustomPackage customPackage =
+		 * customPackageRepository.findById(bookingDTO.getCustomPkgId()) .orElseThrow(()
+		 * -> new RuntimeException("Custom Package not found"));
+		 * booking.setCustomPackage(customPackage); } else {
+		 * booking.setCustomPackage(null); }
+		 */
+
+        bookingRepository.save(booking);
+
+        return bookingDTO;
+    }
+
+    @Override
+    public void deleteBooking(Long id) {
+        Booking booking = bookingRepository.findById(id)
+                                           .orElseThrow(() -> new RuntimeException("Booking not found"));
+        bookingRepository.delete(booking);
+    }
+
+    @Override
+    public BookingDTO getBookingById(Long id) {
+        Booking booking = bookingRepository.findById(id)
+                                           .orElseThrow(() -> new RuntimeException("Booking not found"));
+        return mapToDTO(booking);
+    }
+
+    @Override
+    public List<BookingDTO> getAllBookings() {
+        return bookingRepository.findAll()
+                                .stream()
+                                .map(this::mapToDTO)
+                                .collect(Collectors.toList());
+    }
+
+    private BookingDTO mapToDTO(Booking booking) {
+        BookingDTO dto = new BookingDTO();
+        dto.setBookingId(booking.getBookingId());
+        dto.setBookingDate(booking.getBookingDate());
+        dto.setTotalCost(booking.getTotalCost());
+        dto.setStatus(booking.getStatus());
+        dto.setUserId(booking.getUser().getUserId());
+        dto.setPkgId(booking.getTourPackage().getPkgId());
+       // dto.setCustomPkgId(booking.getCustomPackage() != null ? booking.getCustomPackage().getCustomPkgId() : null);
+        return dto;
+    }
 }
