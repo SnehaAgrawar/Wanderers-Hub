@@ -1,52 +1,64 @@
 package com.app.service;
 
-import java.util.List;
-
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
 import com.app.entities.User;
+import com.app.dto.UserDTO;
 import com.app.repository.UserRepository;
+import com.app.service.UserService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class UserServiceImpl implements UserService {
 
-	@Autowired
-	UserRepository userRepository;
-	
-	@Autowired
-	PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserRepository userRepository;
 
-	@Override
+    @Autowired
+    private ModelMapper modelMapper;
 
-	public User registerUser(User user) {
-		userRepository.save(user);
-		return user;
-	}
-	@Override
-    public User updateUser(Long id,User userDetails) {
-        User user = userRepository.findById(id).orElseThrow();
-        user.setUname(userDetails.getUname());
-        user.setPassword(userDetails.getPassword());
-        user.setContactNo(userDetails.getContactNo());
-        user.setUserType(userDetails.getUserType());
-        user.setAddress(userDetails.getAddress());
-        return userRepository.save(user);
+    @Override
+    public UserDTO createUser(UserDTO userDto) {
+        User user = modelMapper.map(userDto, User.class);
+        User savedUser = userRepository.save(user);
+        return modelMapper.map(savedUser, UserDTO.class);
     }
-	@Override
-	public List<User> getAllUsers() {
-		return userRepository.findAll();
-	}
-	@Override
-	public User getUser(Long uid) {
-		User user = userRepository.findById(uid).orElseThrow(()-> 
-			new ResponseStatusException(HttpStatus.NOT_FOUND,"invalid id"));
-		return user;
-	}
+
+    @Override
+    public UserDTO updateUser(Long id, UserDTO userDto) {
+        Optional<User> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setUname(userDto.getUname());
+            user.setContactNo(userDto.getContactNo());
+            user.setUserType(userDto.getUserType());
+            user.setAddress(userDto.getAddress());
+            User updatedUser = userRepository.save(user);
+            return modelMapper.map(updatedUser, UserDTO.class);
+        }
+        throw new RuntimeException("User not found with id " + id);
+    }
+
+    @Override
+    public UserDTO getUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found with id " + id));
+        return modelMapper.map(user, UserDTO.class);
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(user -> modelMapper.map(user, UserDTO.class))
+                .collect(Collectors.toList());
+    }
 }
