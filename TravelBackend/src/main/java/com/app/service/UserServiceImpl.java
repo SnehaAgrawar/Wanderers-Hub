@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO createUser(UserDTO userDto) {
         User user = modelMapper.map(userDto, User.class);
         User savedUser = userRepository.save(user);
-        savedUser.setPassword(passwordEncoder.encode(savedUser.getPassword()));
+        //savedUser.setPassword(passwordEncoder.encode(savedUser.getPassword()));
         return modelMapper.map(savedUser, UserDTO.class);
     }
 
@@ -39,6 +39,7 @@ public class UserServiceImpl implements UserService {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             user.setUname(userDto.getUname());
+            user.setEmail(userDto.getEmail());
             user.setContactNo(userDto.getContactNo());
             user.setUserType(userDto.getUserType());
             user.setAddress(userDto.getAddress());
@@ -66,4 +67,14 @@ public class UserServiceImpl implements UserService {
                 .map(user -> modelMapper.map(user, UserDTO.class))
                 .collect(Collectors.toList());
     }
+    @Override
+    public Optional<User> login(String email, String password) {
+        return userRepository.findByEmailAndPassword(email, password);
+    }
+    
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
 }
