@@ -12,7 +12,14 @@ function UserRegistration() {
 
     const onSubmit = async (data) => {
         try {
-            const response = await axios.post('http://localhost:8080/users', data);
+            const response = await axios.post('http://localhost:8080/users', {
+                uname: data.uname,
+                email: data.email,
+                password: data.password,
+                contactNo: data.contactNo,
+                userType: data.userType,
+                address: data.address
+            });
             console.log(response.data);
             navigate('/wanderershub/login');
         } catch (error) {
@@ -21,7 +28,7 @@ function UserRegistration() {
     };
 
     return (
-        <div className="registration-container" style={{ backgroundImage: `url(${descImg})` }}>
+        <div className="registration-container">
             <Container className="registration-form">
                 <h2 className="text-center">User Registration</h2>
                 <Form onSubmit={handleSubmit(onSubmit)}>
@@ -83,7 +90,7 @@ function UserRegistration() {
                         {errors.contactNo && <span className="text-danger">{errors.contactNo.message}</span>}
                     </Form.Group>
 
-                    <Form.Group controlId="formUserType">
+                    {/* <Form.Group controlId="formUserType">
                         <Form.Label>User Type</Form.Label>
                         <Form.Control as="select" {...register('userType', { required: 'User Type is required' })}>
                             <option value="CLIENT">Client</option>
@@ -91,6 +98,14 @@ function UserRegistration() {
                             <option value="ADMIN">Admin</option>
                         </Form.Control>
                         {errors.userType && <span className="text-danger">{errors.userType.message}</span>}
+                    </Form.Group> */}
+                     <Form.Group controlId="formUserType">
+                        <Form.Label>User Type</Form.Label>
+                        <Form.Control
+                            type="text"
+                            value="Client"
+                            readOnly
+                        />
                     </Form.Group>
 
                     <Form.Group controlId="formAddress">
