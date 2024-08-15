@@ -1,0 +1,30 @@
+.registration-container {
+    background-image: url('https://images.unsplash.com/photo-1493809842364-78817add7ffb');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.registration-form {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 30px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.registration-form h2 {
+    margin-bottom: 20px;
+}
+
+.registration-form button {
+    width: 100%;
+}
+
+.registration-form button[type="button"] {
+    color: #007bff;
+    text-align: center;
+}

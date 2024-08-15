@@ -1,0 +1,30 @@
+.header {
+    background-color: #ff4c4c;
+    color: white;
+    padding: 15px 0;
+  }
+  
+  .logo {
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .nav-links .nav-item {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+  }
+  
+  .search-bar {
+    width: 70%;
+    margin-right: 10px;
+  }
+  
+  .profile-icon {
+    width: 35px;
+    height: 35px;
+    background-color: white;
+    border-radius: 50%;
+    border: 2px solid #ff4c4c;
+  }
+  

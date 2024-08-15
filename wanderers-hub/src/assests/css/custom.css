@@ -1,0 +1,25 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  header .logo h1 {
+    font-size: 36px;
+    font-weight: bold;
+  }
+  
+  header .profile-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+  .destination img {
+    height: 250px;
+    object-fit: cover;
+  }
+  
+  .review {
+    background: white;
+    padding: 20px;
+    margin
+  

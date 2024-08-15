@@ -1,0 +1,67 @@
+body {
+    background: #f0f4f8; /* Light grey background for the entire page */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .container {
+    background: #ffffff; /* White background for the form container */
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 0 auto;
+    margin-top: 100px; /* Centrally align the container */
+  }
+  
+  h2 {
+    color: #1c87c9; /* Blue color for the heading */
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+  }
+  
+  .form-group label {
+    color: #333; /* Dark grey color for the labels */
+  }
+  
+  .form-control {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 15px;
+    font-size: 16px;
+  }
+  
+  .form-control:focus {
+    border-color: #1c87c9; /* Blue border color when focused */
+    box-shadow: none;
+  }
+  
+  .btn-primary {
+    background-color: #1c87c9; /* Blue background color for the button */
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #145a86; /* Darker blue when hovering */
+  }
+  
+  .reg {
+    text-align: center;
+    margin-top: 15px;
+    color: #555; /* Grey color for the registration text */
+  }
+  
+  .reg a {
+    color: #1c87c9; /* Blue color for the link */
+    text-decoration: none;
+  }
+  
+  .reg a:hover {
+    text-decoration: underline;
+  }
+  

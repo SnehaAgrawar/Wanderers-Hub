@@ -1,0 +1,27 @@
+.invoice-container {
+    background-color: #f7f9fc;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .invoice-container h2 {
+    color: #007bff;
+    margin-bottom: 20px;
+  }
+  
+  .invoice-container p {
+    color: #555;
+    font-size: 18px;
+  }
+  
+  .invoice-container .btn {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .invoice-container .btn:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  

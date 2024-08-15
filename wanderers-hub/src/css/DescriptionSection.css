@@ -1,0 +1,32 @@
+.description-section {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 300px; /* Adjust as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.description-content {
+  background-color: rgba(255, 255, 255, 0.8); /* White background with transparency */
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 60%; /* Adjust width as needed */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.description-content h3 {
+  margin-bottom: 10px;
+}
+
+.description-textarea {
+  width: 100%;
+  height: 100px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+  resize: none;
+}

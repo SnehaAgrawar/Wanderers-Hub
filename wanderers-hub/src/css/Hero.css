@@ -1,0 +1,27 @@
+/* Hero.css */
+#hero {
+    height: 100vh;
+    background: url('../assests/images/travel-bg-image.jpg') no-repeat center center/cover;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.hero-content {
+    max-width: 600px;
+    margin: auto;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+}
+
+.hero-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 40px;
+}
+
+#hero .btn-primary {
+    padding: 10px 30px;
+    font-size: 1.25rem;
+}
