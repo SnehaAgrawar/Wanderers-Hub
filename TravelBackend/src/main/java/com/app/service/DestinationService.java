@@ -1,21 +1,19 @@
 package com.app.service;
 
+import com.app.dto.DestinationDTO;
 import java.util.List;
 import java.util.Optional;
 
-import com.app.dto.DestinationDTO;
-import com.app.entities.Destination;
-
 public interface DestinationService {
+	DestinationDTO createDestination(DestinationDTO destinationDTO);
 
-	List<Destination> getDestination();
+	Optional<DestinationDTO> getDestinationById(Long destId);
 
-	Destination adddestination(Destination destination);
-
-	Destination updateDestinatin(Long id, Destination destination);
-
-	String deleteDestination(Long id);
+	List<DestinationDTO> getAllDestinations();
 
 	Optional<DestinationDTO> findDestinationByName(String destName);
 
+	DestinationDTO updateDestination(Long destId, DestinationDTO destinationDTO);
+
+	void deleteDestination(Long destId);
 }

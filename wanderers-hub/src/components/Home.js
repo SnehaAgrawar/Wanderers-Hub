@@ -9,11 +9,11 @@ import '../css/styles.css'
 export default function Home() {
   return (
     <div>
-    <NavigationBar />
     <Hero />
+    <br/>
     <Destinations />
+    <br/>
     <Reviews />
-    <Footer />
 </div>
   )
 }

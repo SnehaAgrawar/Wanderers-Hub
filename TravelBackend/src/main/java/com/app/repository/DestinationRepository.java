@@ -1,13 +1,9 @@
 package com.app.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import com.app.entities.Destination;
 import java.util.Optional;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
-import com.app.entities.Destination;
-
 public interface DestinationRepository extends JpaRepository<Destination, Long> {
-
-	Optional<Destination> findByDestName(String destName);
+    Optional<Destination> findByDestName(String destName);
 }

@@ -1,55 +1,56 @@
 package com.app.controllers;
 
+import com.app.dto.DestinationDTO;
+import com.app.service.DestinationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.app.dto.DestinationDTO;
-import com.app.entities.Destination;
-import com.app.service.DestinationService;
-
 @RestController
-@RequestMapping("/destination")
+@RequestMapping("/api/destinations")
 public class DestinationController {
 
-	@Autowired
-	public DestinationService destinationService;
+    @Autowired
+    private DestinationService destinationService;
 
-	@GetMapping
-	public List<Destination> getDestinations() {
-		return destinationService.getDestination();
-	}
+    @PostMapping
+    public ResponseEntity<DestinationDTO> createDestination(@RequestBody DestinationDTO destinationDTO) {
+        DestinationDTO createdDestination = destinationService.createDestination(destinationDTO);
+        return ResponseEntity.ok(createdDestination);
+    }
 
-	@PostMapping
-	public Destination addestination(@RequestBody Destination destination) {
-		return destinationService.adddestination(destination);
-	}
+    @GetMapping("/{id}")
+    public ResponseEntity<DestinationDTO> getDestinationById(@PathVariable Long id) {
+        Optional<DestinationDTO> destinationDTO = destinationService.getDestinationById(id);
+        return destinationDTO.map(ResponseEntity::ok)
+                             .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
-	@PutMapping("/{id}")
-	public Destination updateDestination(@PathVariable Long id, @RequestBody Destination destination) {
-		return destinationService.updateDestinatin(id, destination);
-	}
+    @GetMapping
+    public ResponseEntity<List<DestinationDTO>> getAllDestinations() {
+        List<DestinationDTO> destinations = destinationService.getAllDestinations();
+        return ResponseEntity.ok(destinations);
+    }
 
-	@DeleteMapping("/{id}")
-	public String deleteDestination(@PathVariable Long id) {
-		return destinationService.deleteDestination(id);
-	}
+    @GetMapping("/search")
+    public ResponseEntity<DestinationDTO> findDestinationByName(@RequestParam String destName) {
+        Optional<DestinationDTO> destinationDTO = destinationService.findDestinationByName(destName);
+        return destinationDTO.map(ResponseEntity::ok)
+                             .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
-	@GetMapping("/search")
-	public ResponseEntity<DestinationDTO> findDestinationByName(@RequestParam String destName) {
-		Optional<DestinationDTO> destinationDTO = destinationService.findDestinationByName(destName);
-		return destinationDTO.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-	}
+    @PutMapping("/{id}")
+    public ResponseEntity<DestinationDTO> updateDestination(@PathVariable Long id, @RequestBody DestinationDTO destinationDTO) {
+        DestinationDTO updatedDestination = destinationService.updateDestination(id, destinationDTO);
+        return ResponseEntity.ok(updatedDestination);
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteDestination(@PathVariable Long id) {
+        destinationService.deleteDestination(id);
+        return ResponseEntity.noContent().build();
+    }
 }

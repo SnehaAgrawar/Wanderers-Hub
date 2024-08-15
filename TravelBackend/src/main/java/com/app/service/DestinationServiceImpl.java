@@ -2,67 +2,66 @@ package com.app.service;
 
 import java.util.List;
 import java.util.Optional;
-
-import javax.transaction.Transactional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.app.dto.DestinationDTO;
 import com.app.entities.Destination;
 import com.app.repository.DestinationRepository;
 
 @Service
-@Transactional
 public class DestinationServiceImpl implements DestinationService {
 
-	@Autowired
-	public DestinationRepository destinationRepository;
+    @Autowired
+    private DestinationRepository destinationRepository;
 
-	@Override
-	public List<Destination> getDestination() {
-		return destinationRepository.findAll();
-	}
+    @Override
+    public DestinationDTO createDestination(DestinationDTO destinationDTO) {
+        Destination destination = new Destination();
+        destination.setDestName(destinationDTO.getDestName());
+        destination.setState(destinationDTO.getState());
+        destination = destinationRepository.save(destination);
+        return mapToDTO(destination);
+    }
 
-	@Override
-	public Destination adddestination(Destination destination) {
-		return destinationRepository.save(destination);
-	}
+    @Override
+    public Optional<DestinationDTO> getDestinationById(Long destId) {
+        Optional<Destination> destination = destinationRepository.findById(destId);
+        return destination.map(this::mapToDTO);
+    }
 
-	@Override
-	public Destination updateDestinatin(Long id, Destination destination) {
-		if (destinationRepository.existsById(id)) {
-			return destinationRepository.save(destination);
-		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "destination not exist");
-		}
+    @Override
+    public List<DestinationDTO> getAllDestinations() {
+        return destinationRepository.findAll().stream().map(this::mapToDTO).collect(Collectors.toList());
+    }
 
-	}
+    @Override
+    public Optional<DestinationDTO> findDestinationByName(String destName) {
+        Optional<Destination> destination = destinationRepository.findByDestName(destName);
+        return destination.map(this::mapToDTO);
+    }
 
-	@Override
-	public String deleteDestination(Long id) {
-		if (destinationRepository.existsById(id)) {
-			destinationRepository.deleteById(id);
-			return "Destination deleted";
-		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "destination not exist");
-		}
-	}
+    @Override
+    public DestinationDTO updateDestination(Long destId, DestinationDTO destinationDTO) {
+        Destination destination = destinationRepository.findById(destId).orElseThrow(() -> new RuntimeException("Destination not found"));
+        destination.setDestName(destinationDTO.getDestName());
+        destination.setState(destinationDTO.getState());
+        destination = destinationRepository.save(destination);
+        return mapToDTO(destination);
+    }
 
-	@Override
-	public Optional<DestinationDTO> findDestinationByName(String destName) {
-		Optional<Destination> destination = destinationRepository.findByDestName(destName);
-		return destination.map(this::mapToDTO);
-	}
-	
-	private DestinationDTO mapToDTO(Destination destination) {
+    @Override
+    public void deleteDestination(Long destId) {
+        destinationRepository.deleteById(destId);
+    }
+
+    private DestinationDTO mapToDTO(Destination destination) {
         DestinationDTO destinationDTO = new DestinationDTO();
         destinationDTO.setDestId(destination.getDestId());
         destinationDTO.setDestName(destination.getDestName());
         destinationDTO.setState(destination.getState());
         return destinationDTO;
     }
-
 }
