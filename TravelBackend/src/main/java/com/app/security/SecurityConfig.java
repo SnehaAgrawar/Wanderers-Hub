@@ -36,9 +36,15 @@ public class SecurityConfig {
 		.csrf().disable()
 		.authorizeRequests()
 		.antMatchers("/**", "/auth/signup", "/auth/signin", "/v*/api-doc*/**", "/swagger-ui/**").permitAll()
-		.antMatchers(HttpMethod.OPTIONS).permitAll().antMatchers("/products/purchase/**").hasRole("CUSTOMER")
-		.antMatchers("/products/add").hasRole("ADMIN").anyRequest().authenticated().and().sessionManagement()
-	    .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+		.antMatchers(HttpMethod.OPTIONS).permitAll()
+//		.antMatchers("/products/purchase/**").hasRole("CUSTOMER")
+//		.antMatchers("/products/add").hasRole("ADMIN")
+		.anyRequest()
+		.authenticated()
+		.and()
+		.sessionManagement()
+	    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+	    .and()
 		.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();

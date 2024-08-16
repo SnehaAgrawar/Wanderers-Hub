@@ -17,9 +17,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 	private UserRepository userRepo;
 
 	@Override
-	public UserDetails loadUserByUsername(String uname) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		// invoke dao's method
-		User user = userRepo.findByUname(uname)
+		User user = userRepo.findByEmail(email)
 				.orElseThrow(() -> 
 				new UsernameNotFoundException("UserName not found !!!!!"));
 		//=> user email exists - user : persistent

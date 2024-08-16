@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/AdminDashboard.css';
+import NavigationBar from './Navbar';
 
 function AdminDashboard() {
   const [packages, setPackages] = useState([]);
@@ -41,11 +42,19 @@ function AdminDashboard() {
       .catch(error => console.error('Error deleting user:', error));
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
+    <>
+    <div>
+<NavigationBar/>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
     <div className="admin-dashboard">
       
       <div className="container">
@@ -135,6 +144,7 @@ function AdminDashboard() {
       </div>
       
     </div>
+    </>
   );
 }
 

@@ -1,79 +1,160 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Form, Button, Container, Row, Col, InputGroup } from 'react-bootstrap';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Navbar from './Navbar';
-import Footer from './Footer';
-import '../css/Login.css';
 
-function Login() {
-  const [credentials, setCredentials] = useState({ email: '', password: '' });
-  const [errorMessage, setErrorMessage] = useState('');
-  const navigate = useNavigate();
+const Login = () => {
+    const { auth, login } = useAuth();
+    const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
-  };
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+    });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:8080/users/login', null, {
-        params: credentials
-      });
-  
-      if (response.status === 200) {
-        const user = response.data;
-  
-        if (user.userType === 'ADMIN') {
-          navigate('/wanderershub/admin');
-        } else if (user.userType === 'CLIENT') {
-          navigate('/wanderershub/home');
-        } else if (user.userType === 'GUIDE') {
-          navigate('/wanderershub/guide');
+    const [errors, setErrors] = useState({});
+    const [showPassword, setShowPassword] = useState(false);
+
+    useEffect(() => {
+        if (auth.token && auth.role) {
+            if (auth.role === 'ADMIN') {
+                navigate('/wanderershub/admin', { replace: true });
+            } else if (auth.role === 'CLIENT') {
+                navigate('/wanderershub/home', { replace: true });
+            } else if (auth.role === 'GUIDE') {
+                navigate('/wanderershub/guide', { replace: true });
+            }
         }
-      }
-    } catch (error) {
-      console.error('Login error:', error.response);
-      setErrorMessage('Invalid email or password');
-    }
-  };
-  
+    }, [auth, navigate]);
 
-  return (
-    <div>
-      <div className="container mt-5">
-        <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              type="text"
-              className="form-control"
-              name="email"
-              value={credentials.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Password</label>
-            <input
-              type="password"
-              className="form-control"
-              name="password"
-              value={credentials.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
-          <button type="submit" className="btn btn-primary">Login</button>
-          <p className="reg">Don't have an account? <a href="/wanderershub/register">Register</a></p>
-        </form>
-      </div>
-    </div>
-  );
-}
+    const validate = () => {
+        let formErrors = {};
+        let valid = true;
+
+        if (!formData.email) {
+            formErrors.email = 'Email is required';
+            valid = false;
+        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+            formErrors.email = 'Email is invalid';
+            valid = false;
+        }
+        if (!formData.password) {
+            formErrors.password = 'Password is required';
+            valid = false;
+        }
+
+        setErrors(formErrors);
+        return valid;
+    };
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (validate()) {
+            try {
+                const response = await axios.post('http://localhost:8080/auth/signin', formData);
+                const token = response.data.jwt || response.data.token;
+
+                if (!token) {
+                    throw new Error("No token found in response");
+                }
+
+                const base64Url = token.split('.')[1];
+                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                const decodedToken = JSON.parse(window.atob(base64));
+
+                const roles = decodedToken.authorities || [];
+                const username = decodedToken.sub;
+
+                if (roles.length === 0) {
+                    throw new Error("No roles found in token");
+                }
+
+                let role = roles[0];
+                switch (role) {
+                    case 'C':
+                        role = 'CLIENT';
+                        break;
+                    case 'A':
+                        role = 'ADMIN';
+                        break;
+                    case 'G':
+                        role = 'GUIDE';
+                        break;
+                    default:
+                        console.warn(`Unknown role: ${role}`);
+                        setErrors({ apiError: 'Unknown role' });
+                        return;
+                }
+
+                login(token, username, role, navigate);
+
+            } catch (error) {
+                console.error('Login error:', error);
+                setErrors({ ...errors, apiError: 'Invalid email or password' });
+            }
+        }
+    };
+
+    return (
+        <Container className="login-container">
+            <Row className="justify-content-center">
+                <Col xs={12} md={6}>
+                    <h2 className="text-center mb-4">Login</h2>
+                    <Form onSubmit={handleSubmit}>
+                        <Form.Group controlId="formEmail">
+                            <Form.Label>Email</Form.Label>
+                            <Form.Control
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                isInvalid={!!errors.email}
+                            />
+                            <Form.Control.Feedback type="invalid">
+                                {errors.email}
+                            </Form.Control.Feedback>
+                        </Form.Group>
+
+                        <Form.Group controlId="formPassword" className="mt-3">
+                            <Form.Label>Password</Form.Label>
+                            <InputGroup>
+                                <Form.Control
+                                    type={showPassword ? "text" : "password"}
+                                    name="password"
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    isInvalid={!!errors.password}
+                                />
+                                <InputGroup.Text onClick={() => setShowPassword(!showPassword)}>
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                </InputGroup.Text>
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.password}
+                                </Form.Control.Feedback>
+                            </InputGroup>
+                        </Form.Group>
+
+                        {errors.apiError && (
+                            <div className="text-danger mt-3">
+                                {errors.apiError}
+                            </div>
+                        )}
+
+                        <Button variant="danger" type="submit" className="w-100 mt-4">
+                            Login
+                        </Button>
+                    </Form>
+                </Col>
+            </Row>
+        </Container>
+    );
+};
 
 export default Login;

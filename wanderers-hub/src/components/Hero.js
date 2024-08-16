@@ -7,7 +7,7 @@ function Hero() {
     const navigate = useNavigate(); // Initialize useNavigate
 
     const handleClick = () => {
-        navigate('/wanderershub/packages'); // Redirect to DestinationPackages page
+        navigate('/wanderershub/destinations'); // Redirect to DestinationPackages page
     };
 
     return (

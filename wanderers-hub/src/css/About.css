@@ -1,0 +1,46 @@
+.about-container {
+    /* background-image: url('path-to-background-image.jpg'); */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay for better text readability */
+    padding: 50px 0;
+    width: 100%;
+}
+
+.about-container h5 {
+    color: #ffffff;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.about-container a {
+    color: #cccccc;
+    text-decoration: none;
+}
+
+.about-container a:hover {
+    text-decoration: underline;
+    color: #ffffff;
+}
+
+.partners img {
+    max-height: 50px;
+}
+
+.brochure-img {
+    max-width: 120px;
+    max-height: 80px;
+    object-fit: cover;
+}
+
+.text-muted {
+    color: #dddddd !important;
+}

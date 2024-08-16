@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,25 +53,27 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<UserDTO> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
     
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
-        System.out.println("Received email: " + email);
-        System.out.println("Received password: " + password);
-
-        Optional<User> user = userService.login(email, password);
-
-        if (user.isPresent()) {
-            return ResponseEntity.ok(user.get());
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
-        }
-    }
+//    @PostMapping("/login")
+//    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
+//        System.out.println("Received email: " + email);
+//        System.out.println("Received password: " + password);
+//
+//        Optional<User> user = userService.login(email, password);
+//
+//        if (user.isPresent()) {
+//            return ResponseEntity.ok(user.get());
+//        } else {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+//        }
+//    }
 
     @GetMapping("/getUserType")
     public ResponseEntity<String> getUserType(@RequestParam String email) {

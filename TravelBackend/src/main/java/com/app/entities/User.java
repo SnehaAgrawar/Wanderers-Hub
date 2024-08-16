@@ -17,15 +17,14 @@ import lombok.NoArgsConstructor;
 @Entity
 public class User {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
-    private String uname;
-    private String email;
-    private String password;
-    private String contactNo;
-    @Enumerated(EnumType.STRING)
-    private UserType userType;
-    private String address;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long userId;
+	private String uname;
+	private String email;
+	private String password;
+	private String contactNo;
+	@Enumerated(EnumType.STRING)
+	private UserType userType;
+	private String address;
 
-    
 }

@@ -16,65 +16,65 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+	@Autowired
+	private UserRepository userRepository;
 
-    @Autowired
-    private ModelMapper modelMapper;
-    
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+	@Autowired
+	private ModelMapper modelMapper;
 
-    @Override
-    public UserDTO createUser(UserDTO userDto) {
-        User user = modelMapper.map(userDto, User.class);
-        User savedUser = userRepository.save(user);
-        //savedUser.setPassword(passwordEncoder.encode(savedUser.getPassword()));
-        return modelMapper.map(savedUser, UserDTO.class);
-    }
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
-    @Override
-    public UserDTO updateUser(Long id, UserDTO userDto) {
-        Optional<User> userOptional = userRepository.findById(id);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setUname(userDto.getUname());
-            user.setEmail(userDto.getEmail());
-            user.setContactNo(userDto.getContactNo());
-            user.setUserType(userDto.getUserType());
-            user.setAddress(userDto.getAddress());
-            User updatedUser = userRepository.save(user);
-            return modelMapper.map(updatedUser, UserDTO.class);
-        }
-        throw new RuntimeException("User not found with id " + id);
-    }
+	@Override
+	public UserDTO createUser(UserDTO userDto) {
+		User user = modelMapper.map(userDto, User.class);
 
-    @Override
-    public UserDTO getUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found with id " + id));
-        return modelMapper.map(user, UserDTO.class);
-    }
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		User savedUser = userRepository.save(user);
+		return modelMapper.map(savedUser, UserDTO.class);
+	}
 
-    @Override
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
-    }
+	@Override
+	public UserDTO updateUser(Long id, UserDTO userDto) {
+		Optional<User> userOptional = userRepository.findById(id);
+		if (userOptional.isPresent()) {
+			User user = userOptional.get();
+			user.setUname(userDto.getUname());
+			user.setEmail(userDto.getEmail());
+			user.setContactNo(userDto.getContactNo());
+			user.setUserType(userDto.getUserType());
+			user.setAddress(userDto.getAddress());
+			User updatedUser = userRepository.save(user);
+			return modelMapper.map(updatedUser, UserDTO.class);
+		}
+		throw new RuntimeException("User not found with id " + id);
+	}
 
-    @Override
-    public List<UserDTO> getAllUsers() {
-        return userRepository.findAll()
-                .stream()
-                .map(user -> modelMapper.map(user, UserDTO.class))
-                .collect(Collectors.toList());
-    }
-    @Override
-    public Optional<User> login(String email, String password) {
-        return userRepository.findByEmailAndPassword(email, password);
-    }
-    
-    @Override
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
+	@Override
+	public UserDTO getUserById(Long id) {
+		User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found with id " + id));
+		return modelMapper.map(user, UserDTO.class);
+	}
+
+	@Override
+	public void deleteUser(Long id) {
+		userRepository.deleteById(id);
+	}
+
+	@Override
+	public List<UserDTO> getAllUsers() {
+		return userRepository.findAll().stream().map(user -> modelMapper.map(user, UserDTO.class))
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public Optional<User> login(String email, String password) {
+		return userRepository.findByEmailAndPassword(email, password);
+	}
+
+	@Override
+	public Optional<User> findByEmail(String email) {
+		return userRepository.findByEmail(email);
+	}
 
 }

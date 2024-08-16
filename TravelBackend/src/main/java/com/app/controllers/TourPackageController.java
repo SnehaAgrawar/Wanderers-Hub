@@ -49,5 +49,11 @@ public class TourPackageController {
 	{
 		return tourPackageSevice.deleteById(id);
 	}
+	
+	@GetMapping
+	public List<TourPackage> getAllPackages()
+	{
+		return tourPackageSevice.getAllPackages();
+	}
 
 }

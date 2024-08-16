@@ -15,4 +15,5 @@ public interface TourPackageSevice {
 	
 	String deleteById(Long id);
 
+	List<TourPackage> getAllPackages();
 }

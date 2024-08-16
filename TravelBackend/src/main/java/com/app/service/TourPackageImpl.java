@@ -22,6 +22,8 @@ public class TourPackageImpl implements TourPackageSevice {
 		return tourPackageRepository.save(tourPackage);
 	}
 
+
+	
 	@Override
 	public TourPackage editPackage(Long id, TourPackage tourPackage) {
 		TourPackage tourPackage2 = tourPackageRepository.findById(id).orElseThrow();
@@ -51,6 +53,13 @@ public class TourPackageImpl implements TourPackageSevice {
 			return "deleted";
 		}
 		return "not deleted";
+	}
+
+
+
+	@Override
+	public List<TourPackage> getAllPackages() {
+		return tourPackageRepository.findAll();
 	}
 	
 	

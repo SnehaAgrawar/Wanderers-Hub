@@ -16,10 +16,16 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<BookingDTO> createBooking(@RequestBody BookingDTO bookingDTO) {
         BookingDTO savedBooking = bookingService.createBooking(bookingDTO);
         return ResponseEntity.ok(savedBooking);
+    }
+    
+    @GetMapping("/guide/{guideId}")
+    public ResponseEntity<List<BookingDTO>> getBookingsByGuide(@PathVariable Long guideId) {
+        List<BookingDTO> bookings = bookingService.getBookingsByGuide(guideId);
+        return ResponseEntity.ok(bookings);
     }
 
     @PutMapping("/{id}")
