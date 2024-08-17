@@ -1,69 +1,8 @@
-// import React, { useState, useEffect } from 'react';
-// import { Container, Table } from 'react-bootstrap';
-// import axios from 'axios';
-// import '../css/Bookings.css';
-
-// function Bookings() {
-//     const [bookingsData, setBookingsData] = useState([]);
-
-//     useEffect(() => {
-//         // Fetch bookings data from the backend using Axios
-//         const fetchBookings = async () => {
-//             try {
-//                 const response = await axios.get('/wanderershub/bookings'); // Adjust the URL to match your backend endpoint
-//                 setBookingsData(response.data);
-//             } catch (error) {
-//                 console.error('Error fetching bookings:', error);
-//             }
-//         };
-
-//         fetchBookings();
-//     }, []); // Empty dependency array ensures this effect runs once on component mount
-
-//     return (
-//         <Container className="bookings-page py-5">
-//             <h2 className="text-center mb-4">Your Bookings</h2>
-//             <Table bordered hover responsive>
-//                 <thead>
-//                     <tr>
-//                         <th>Booking ID</th>
-//                         <th>Date</th>
-//                         <th>Cost</th>
-//                         <th>Status</th>
-//                         <th>Customer Name</th>
-//                         <th>Tour Package</th>
-//                     </tr>
-//                 </thead>
-//                 <tbody>
-//                     {bookingsData.length > 0 ? (
-//                         bookingsData.map((booking, index) => (
-//                             <tr key={index}>
-//                                 <td>{booking.bookingId}</td>
-//                                 <td>{booking.date}</td>
-//                                 <td>{booking.cost}</td>
-//                                 <td className={booking.status.toLowerCase()}>{booking.status}</td>
-//                                 <td>{booking.customerName}</td>
-//                                 <td>{booking.tourPackage}</td>
-//                             </tr>
-//                         ))
-//                     ) : (
-//                         <tr>
-//                             <td colSpan="6" className="text-center">No bookings found</td>
-//                         </tr>
-//                     )}
-//                 </tbody>
-//             </Table>
-//         </Container>
-//     );
-// }
-
-// export default Bookings;
-
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Container, Form } from 'react-bootstrap';
+import { useAuth } from '../context/AuthContext';
 
 const Booking = () => {
     const { pkgId } = useParams(); // Get pkgId from URL parameters
@@ -71,21 +10,30 @@ const Booking = () => {
     const [bookingDate, setBookingDate] = useState(new Date().toISOString().split('T')[0]); // Default to today's date
     const [status, setStatus] = useState('Pending');
     const [price, setPrice] = useState(0); // State to store the price of the package
+    const [bookingId, setBookingId] = useState(null); // State to store the booking ID
+    const { auth } = useAuth(); // Get userId from auth context
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Fetch user details (assuming you have a userId or similar mechanism)
-        const userId = 17; // Replace with the logic to retrieve the userId
+        if (!pkgId) {
+            console.error("Package ID is missing from the URL");
+            return;
+        }
 
-        axios.get(`http://localhost:8080/users/${userId}`) // Corrected string interpolation with backticks
-            .then(response => setUser(response.data))
+        // Fetch user details based on stored userId in auth context
+        axios.get(`http://localhost:8080/users/${auth.userId}`)
+            .then(response => {
+                setUser(response.data);
+            })
             .catch(error => console.error('Error fetching user data', error));
         
         // Fetch price for the package
-        axios.get(`http://localhost:8080/tourpackages/get/${pkgId}`) // Corrected string interpolation with backticks
-            .then(response => setPrice(response.data.price))
+        axios.get(`http://localhost:8080/tourpackages/get/${pkgId}`)
+            .then(response => {
+                setPrice(response.data.price);
+            })
             .catch(error => console.error('Error fetching package data', error));
-    }, [pkgId]);
+    }, [pkgId, auth.userId]);
 
     const handleBooking = () => {
         if (!user || !pkgId) {
@@ -94,17 +42,18 @@ const Booking = () => {
         }
 
         const bookingData = {
-            bookingDate,
+            bookingDate: bookingDate,
             totalCost: price,
-            status,
-            user: { userId: user.userId }, // Pass the userId in the booking data
-            tourPackage: { pkgId } // Pass the pkgId in the booking data
+            status: status,
+            userId: user.userId, // Pass the user ID directly
+            pkgId: parseInt(pkgId, 10), // Pass the package ID directly as an integer
         };
 
         axios.post('http://localhost:8080/bookings/create', bookingData)
             .then(response => {
                 console.log('Booking successful:', response.data);
-                navigate('/confirmation'); // Redirect to confirmation page after successful booking
+                setBookingId(response.data.bookingId); // Set the booking ID from the response
+                navigate('/wanderershub/payment/:bookingId'); // Redirect to payment page after successful booking
             })
             .catch(error => {
                 console.error('There was an error processing the booking!', error);
@@ -116,6 +65,14 @@ const Booking = () => {
         <Container className="booking-container">
             <h2>Confirm Booking</h2>
             <Form>
+                {/* <Form.Group controlId="formBasicBookingId">
+                    <Form.Label>Booking ID</Form.Label>
+                    <Form.Control
+                        type="text"
+                        value={bookingId || 'Booking ID will be generated after confirmation'}
+                        readOnly
+                    />
+                </Form.Group> */}
                 <Form.Group controlId="formBasicDate">
                     <Form.Label>Booking Date</Form.Label>
                     <Form.Control
@@ -140,6 +97,14 @@ const Booking = () => {
                         readOnly
                     />
                 </Form.Group>
+                <Form.Group controlId="formBasicPkgId">
+                    <Form.Label>Package ID</Form.Label>
+                    <Form.Control
+                        type="text"
+                        value={pkgId}
+                        readOnly
+                    />
+                </Form.Group>
                 <Button variant="primary" onClick={handleBooking}>
                     Confirm Booking
                 </Button>
@@ -149,4 +114,3 @@ const Booking = () => {
 };
 
 export default Booking;
-

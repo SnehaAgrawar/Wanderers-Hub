@@ -1,11 +1,11 @@
-import { Navbar, Nav, Button, Dropdown } from 'react-bootstrap';
+import { Navbar, Nav, Button, Dropdown, Container} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import '../css/Navbar.css';
 
 function NavigationBar() {
     const { auth, logout } = useAuth();
-    const navigate = useNavigate(); // Initialize the useNavigate hook
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         logout(navigate);
@@ -13,23 +13,22 @@ function NavigationBar() {
 
     return (
         <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
-            <div className="container">
+            
                 <Navbar.Brand href="#">
-                    <img src="../images/website-logo.jpg" alt="Logo" className="logo" />
+                    {/* <img src="../assets/images/website-logo.jpg" alt="Logo" className="logo" /> */}
                     Wanderer's Hub
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="ml-auto">
+                    <Nav className="ms-auto">
                         <Nav.Link href="/wanderershub/home">Home</Nav.Link>
                         <Nav.Link href="/about">About</Nav.Link>
                         <Nav.Link href="#">Search</Nav.Link>
                         {auth.user ? (
-                            <Dropdown align="end" className="ml-2">
+                            <Dropdown align="end">
                                 <Dropdown.Toggle variant="secondary" id="dropdown-basic">
                                     {auth.user}
                                 </Dropdown.Toggle>
-
                                 <Dropdown.Menu>
                                     <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
                                 </Dropdown.Menu>
@@ -37,16 +36,16 @@ function NavigationBar() {
                         ) : (
                             <>
                                 <Button 
-                                    variant="primary" 
-                                    className="ml-2"
-                                    onClick={() => navigate('/wanderershub/login')} // Navigate to Login.js
+                                    variant="outline-light" 
+                                    className="ms-2"
+                                    onClick={() => navigate('/wanderershub/login')}
                                 >
                                     Login
                                 </Button>
                                 <Button 
-                                    variant="secondary" 
-                                    className="ml-2"
-                                    onClick={() => navigate('/wanderershub/register')} // Navigate to Register.js
+                                    variant="outline-light" 
+                                    className="ms-2"
+                                    onClick={() => navigate('/wanderershub/register')}
                                 >
                                     Signup
                                 </Button>
@@ -54,7 +53,7 @@ function NavigationBar() {
                         )}
                     </Nav>
                 </Navbar.Collapse>
-            </div>
+        
         </Navbar>
     );
 }

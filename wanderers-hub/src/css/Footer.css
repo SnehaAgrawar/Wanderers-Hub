@@ -1,18 +1,17 @@
-/* Footer.css */
-footer {
-  margin-top: 50px;
+.footer {
+  padding: 20px 0;
+  background-color: #343a40;
+  text-align: center;
 }
 
-footer p {
+.footer p {
   margin: 0;
+  font-size: 0.9rem;
+  color: #ccc;
 }
 
-.social-icons {
-  margin-top: 10px;
-}
-
-.social-icons a {
-  color: white;
-  margin: 0 10px;
-  font-size: 1.5rem;
+.footer h5 {
+  font-size: 1.25rem;
+  margin-bottom: 10px;
+  color: #ffffff;
 }

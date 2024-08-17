@@ -4,6 +4,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import '../css/Login.css';
 
 const Login = () => {
     const { auth, login } = useAuth();
@@ -71,6 +72,7 @@ const Login = () => {
 
                 const roles = decodedToken.authorities || [];
                 const username = decodedToken.sub;
+                const userId = decodedToken.userId; // Assuming userId is included in the token
 
                 if (roles.length === 0) {
                     throw new Error("No roles found in token");
@@ -93,7 +95,7 @@ const Login = () => {
                         return;
                 }
 
-                login(token, username, role, navigate);
+                login(token, username, role, userId, navigate);
 
             } catch (error) {
                 console.error('Login error:', error);
@@ -102,8 +104,12 @@ const Login = () => {
         }
     };
 
+    const handleRegister = () => {
+        navigate('/wanderershub/register');
+    };
+
     return (
-        <Container className="login-container">
+        
             <Row className="justify-content-center">
                 <Col xs={12} md={6}>
                     <h2 className="text-center mb-4">Login</h2>
@@ -150,10 +156,17 @@ const Login = () => {
                         <Button variant="danger" type="submit" className="w-100 mt-4">
                             Login
                         </Button>
+
+                        <div className="text-center mt-3">
+                            <span>Not registered yet? </span>
+                            <Button variant="link" onClick={handleRegister}>
+                                Register
+                            </Button>
+                        </div>
                     </Form>
                 </Col>
             </Row>
-        </Container>
+   
     );
 };
 

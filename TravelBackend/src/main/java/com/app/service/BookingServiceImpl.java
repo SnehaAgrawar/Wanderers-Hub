@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.app.dto.BookingDTO;
 import com.app.entities.Booking;
+import com.app.entities.CustomPackage;
 import com.app.entities.TourPackage;
 import com.app.entities.User;
 import com.app.repository.BookingRepository;
@@ -43,70 +44,80 @@ public class BookingServiceImpl implements BookingService {
     }
     
 
-//    @Override
-//    public BookingDTO createBooking(BookingDTO bookingDTO) {
-//        Booking booking = new Booking();
-//        booking.setBookingDate(bookingDTO.getBookingDate());
-//        booking.setTotalCost(bookingDTO.getTotalCost());
-//        booking.setStatus(bookingDTO.getStatus());
-//
-//        User user = userRepository.findById(bookingDTO.getUserId())
-//                                  .orElseThrow(() -> new RuntimeException("User not found"));
-//        booking.setUser(user);
-//
-//        TourPackage tourPackage = tourPackageRepository.findById(bookingDTO.getPkgId())
-//                                                       .orElseThrow(() -> new RuntimeException("Package not found"));
-//        booking.setTourPackage(tourPackage);
-//
-////        if (bookingDTO.getCustomPkgId() != null) {
-////            CustomPackage customPackage = customPackageRepository.findById(bookingDTO.getCustomPkgId())
-////                                                                 .orElseThrow(() -> new RuntimeException("Custom Package not found"));
-////            booking.setCustomPackage(customPackage);
-////        }
-//
-//        Booking savedBooking = bookingRepository.save(booking);
-//        bookingDTO.setBookingId(savedBooking.getBookingId());
-//
-//        return bookingDTO;
-//    }
-    
     @Override
     public BookingDTO createBooking(BookingDTO bookingDTO) {
-    	
-        // Create a new Booking entity
         Booking booking = new Booking();
         booking.setBookingDate(bookingDTO.getBookingDate());
         booking.setTotalCost(bookingDTO.getTotalCost());
         booking.setStatus(bookingDTO.getStatus());
 
-        if (booking.getBookingId() == null) {
-            throw new IllegalArgumentException("Booking ID must not be null");
-        }
-        // Fetch and set the associated User
+        // Fetch user by ID
         User user = userRepository.findById(bookingDTO.getUserId())
-                                  .orElseThrow(() -> new RuntimeException("User not found"));
+                                  .orElseThrow(() -> new RuntimeException("User not found with ID: " + bookingDTO.getUserId()));
         booking.setUser(user);
 
-        // Fetch and set the associated TourPackage
+        // Fetch tour package by ID
         TourPackage tourPackage = tourPackageRepository.findById(bookingDTO.getPkgId())
-                                                       .orElseThrow(() -> new RuntimeException("Package not found"));
+                                                       .orElseThrow(() -> new RuntimeException("Package not found with ID: " + bookingDTO.getPkgId()));
         booking.setTourPackage(tourPackage);
 
-        // Optionally fetch and set the associated CustomPackage if it exists
+        // Fetch and set custom package if provided
 //        if (bookingDTO.getCustomPkgId() != null) {
 //            CustomPackage customPackage = customPackageRepository.findById(bookingDTO.getCustomPkgId())
-//                                                                 .orElseThrow(() -> new RuntimeException("Custom Package not found"));
+//                                                                 .orElseThrow(() -> new RuntimeException("Custom Package not found with ID: " + bookingDTO.getCustomPkgId()));
 //            booking.setCustomPackage(customPackage);
+//        } else {
+//            booking.setCustomPackage(null); // Ensure this field is handled if not provided
 //        }
 
-        // Save the booking entity to the database
-        Booking savedBooking = bookingRepository.save(booking);
-
-        // Set the generated booking ID in the DTO to return to the client
-        bookingDTO.setBookingId(savedBooking.getBookingId());
-
-        return bookingDTO;
+        try {
+            // Save the booking
+            Booking savedBooking = bookingRepository.save(booking);
+            bookingDTO.setBookingId(savedBooking.getBookingId());
+            return bookingDTO;
+        } catch (Exception e) {
+            // Catch any exceptions and provide a detailed error message
+            throw new RuntimeException("Failed to create booking: " + e.getMessage());
+        }
     }
+
+    
+//    @Override
+//    public BookingDTO createBooking(BookingDTO bookingDTO) {
+//
+//        // Create a new Booking entity
+//        Booking booking = new Booking();
+//        booking.setBookingDate(bookingDTO.getBookingDate());
+//        booking.setTotalCost(bookingDTO.getTotalCost());
+//        booking.setStatus(bookingDTO.getStatus());
+//
+//        // Fetch and set the associated User
+//        User user = userRepository.findById(bookingDTO.getUserId())
+//                                  .orElseThrow(() -> new RuntimeException("User not found with ID: " + bookingDTO.getUserId()));
+//        booking.setUser(user);
+//
+//        // Fetch and set the associated TourPackage
+//        TourPackage tourPackage = tourPackageRepository.findById(bookingDTO.getPkgId())
+//                                                       .orElseThrow(() -> new RuntimeException("Package not found with ID: " + bookingDTO.getPkgId()));
+//        booking.setTourPackage(tourPackage);
+//
+//        // Optionally fetch and set the associated CustomPackage if it exists
+////        if (bookingDTO.getCustomPkgId() != null) {
+////            CustomPackage customPackage = customPackageRepository.findById(bookingDTO.getCustomPkgId())
+////                                                                 .orElseThrow(() -> new RuntimeException("Custom Package not found with ID: " + bookingDTO.getCustomPkgId()));
+////            booking.setCustomPackage(customPackage);
+////        }
+//
+//        // Save the booking entity to the database
+//        Booking savedBooking = bookingRepository.save(booking);
+//
+//        // Set the generated booking ID in the DTO to return to the client
+//        bookingDTO.setBookingId(savedBooking.getBookingId());
+//
+//        return bookingDTO;
+//    }
+
+
 
 
     @Override

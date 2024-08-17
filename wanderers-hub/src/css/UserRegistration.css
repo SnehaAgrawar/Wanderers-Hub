@@ -11,27 +11,29 @@
 
 .registration-form {
     background-color: rgba(255, 255, 255, 0.9);
-    padding: 40px;
+    padding: 30px; /* Reduced padding */
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 500px;
+    max-width: 450px; /* Reduced max-width */
+    margin: 0 20px; /* Ensures the form stays within the background image */
 }
 
 .registration-form h2 {
-    margin-bottom: 30px;
+    margin-bottom: 20px; /* Reduced margin-bottom */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.75rem; /* Reduced font-size */
 }
 
 .registration-form .form-control {
-    margin-bottom: 15px;
+    margin-bottom: 12px; /* Slightly reduced margin */
     border-radius: 5px;
 }
 
 .registration-form button {
     width: 100%;
-    padding: 10px;
-    font-size: 16px;
+    padding: 8px; /* Reduced padding */
+    font-size: 14px; /* Reduced font-size */
 }
 
 .registration-form button[type="button"] {

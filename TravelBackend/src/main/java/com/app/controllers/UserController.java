@@ -75,15 +75,27 @@ public class UserController {
 //        }
 //    }
 
-    @GetMapping("/getUserType")
-    public ResponseEntity<String> getUserType(@RequestParam String email) {
-        Optional<User> user = userService.findByEmail(email);
-
-        if (user.isPresent()) {
-            return ResponseEntity.ok(user.get().getUserType().name());
+//    @GetMapping("/getUserType")
+//    public ResponseEntity<String> getUserType(@RequestParam String email) {
+//        Optional<User> user = userService.findByEmail(email);
+//
+//        if (user.isPresent()) {
+//            return ResponseEntity.ok(user.get().getUserType().name());
+//        } else {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+//        }
+//    }
+    
+    @GetMapping("/username/{email}")
+    public ResponseEntity<UserDTO> getUserByEmail(@PathVariable String email) {
+        UserDTO userDTO = userService.findByEmail(email);
+        if (userDTO != null) {
+            return ResponseEntity.ok(userDTO);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+
 
 }

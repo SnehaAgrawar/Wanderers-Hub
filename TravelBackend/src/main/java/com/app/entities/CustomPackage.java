@@ -1,6 +1,8 @@
 package com.app.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +20,7 @@ public class CustomPackage {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long customPkgId;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "destId", nullable = false)
 	private Destination destination;
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
-import { Form, Button, Container } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import '../css/UserRegistration.css';
 import descImg from '../assests/images/desc-img.jpg';
@@ -29,7 +29,7 @@ function UserRegistration() {
 
     return (
         <div className="registration-container">
-            <Container className="registration-form">
+            <div className="registration-form">
                 <h2 className="text-center">User Registration</h2>
                 <Form onSubmit={handleSubmit(onSubmit)}>
                     <Form.Group controlId="formName">
@@ -95,18 +95,9 @@ function UserRegistration() {
                         <Form.Control as="select" {...register('userType', { required: 'User Type is required' })}>
                             <option value="CLIENT">Client</option>
                             <option value="GUIDE">Guide</option>
-                            {/* <option value="ADMIN">Admin</option> */}
                         </Form.Control>
                         {errors.userType && <span className="text-danger">{errors.userType.message}</span>}
                     </Form.Group>
-                     {/* <Form.Group controlId="formUserType">
-                        <Form.Label>User Type</Form.Label>
-                        <Form.Control
-                            type="text"
-                            value="Client"
-                            readOnly
-                        />
-                    </Form.Group> */}
 
                     <Form.Group controlId="formAddress">
                         <Form.Label>Address</Form.Label>
@@ -117,13 +108,13 @@ function UserRegistration() {
                     <Button variant="primary" type="submit" className="mt-3">
                         Register
                     </Button>
-                    <Link to="/login">
+                    <Link to="/wanderershub/login">
                         <Button variant="link" type="button" className="mt-3">
                             Login
                         </Button>
                     </Link>
                 </Form>
-            </Container>
+            </div>
         </div>
     );
 }

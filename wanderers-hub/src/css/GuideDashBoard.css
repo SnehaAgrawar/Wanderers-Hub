@@ -1,31 +1,55 @@
-/* src/assets/css/styles.css */
+/* src/assets/css/guide-dashboard.css */
 
 body {
-    font-family: Arial, sans-serif;
-  }
-  
+  font-family: Arial, sans-serif;
+  /* background: url('/path-to-your-travel-image.jpg') no-repeat center center fixed; */
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+}
+
+.guide-dashboard {
+  background-color: rgba(248, 249, 250, 0.9); /* Slightly transparent white background */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #d9534f;
+}
+
+.guide-dashboard-content {
+  margin-top: 20px;
+}
+
+.btn-primary {
+  background-color: #d9534f;
+  border-color: #d9534f;
+}
+
+.btn-primary:hover {
+  background-color: #c9302c;
+  border-color: #ac2925;
+}
+
+.assigned-tours {
+  margin-top: 20px;
+}
+
+.list-group-item {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.list-group-item strong {
+  color: #d9534f;
+}
+
+@media (max-width: 768px) {
   .guide-dashboard {
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 15px;
   }
-  
-  header h2 {
-    color: #d9534f;
-  }
-  
-  .table th {
-    font-weight: bold;
-  }
-  
-  .btn-danger {
-    background-color: #d9534f;
-    border: none;
-  }
-  
-  footer {
-    margin-top: 50px;
-    background-color: #d9534f;
-  }
-  
+}

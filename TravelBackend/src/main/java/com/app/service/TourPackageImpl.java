@@ -8,60 +8,54 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.app.entities.TourPackage;
-import com.app.entities.User;
 import com.app.repository.TourPackageRepository;
 
 @Service
 @Transactional
 public class TourPackageImpl implements TourPackageSevice {
-	@Autowired
-	TourPackageRepository tourPackageRepository;
 
-	@Override
-	public TourPackage addPackage(TourPackage tourPackage) {
-		return tourPackageRepository.save(tourPackage);
-	}
+    @Autowired
+    private TourPackageRepository tourPackageRepository;
 
+    @Override
+    public TourPackage addPackage(TourPackage tourPackage) {
+        return tourPackageRepository.save(tourPackage);
+    }
 
-	
-	@Override
-	public TourPackage editPackage(Long id, TourPackage tourPackage) {
-		TourPackage tourPackage2 = tourPackageRepository.findById(id).orElseThrow();
-		tourPackage2.setPname(tourPackage.getPname());
-		tourPackage2.setPrice(tourPackage.getPrice());
-		tourPackage2.setDescription(tourPackage.getDescription());
-        tourPackage2.setDuration(tourPackage.getDuration());
-        tourPackage2.setStartDate(tourPackage.getStartDate());
-        return tourPackageRepository.save(tourPackage2);
-	}
+    @Override
+    public TourPackage editPackage(Long id, TourPackage tourPackage) {
+        TourPackage existingPackage = tourPackageRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Package not found with id " + id));
+        existingPackage.setPname(tourPackage.getPname());
+        existingPackage.setPrice(tourPackage.getPrice());
+        existingPackage.setDescription(tourPackage.getDescription());
+        existingPackage.setDuration(tourPackage.getDuration());
+        existingPackage.setStartDate(tourPackage.getStartDate());
+        return tourPackageRepository.save(existingPackage);
+    }
 
-	@Override
-	public List<TourPackage> getByName(String name) {
-		return tourPackageRepository.findAllByPname(name);
-	}
+    @Override
+    public List<TourPackage> getByName(String name) {
+        return tourPackageRepository.findAllByPname(name);
+    }
 
-	@Override
-	public TourPackage getById(Long id) {
-		return tourPackageRepository.findById(id).orElseThrow();
-	}
+    @Override
+    public TourPackage getById(Long id) {
+        return tourPackageRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Package not found with id " + id));
+    }
 
-	@Override
-	public String deleteById(Long id) {
-		if(tourPackageRepository.existsById(id))
-		{
-			tourPackageRepository.deleteById(id);
-			return "deleted";
-		}
-		return "not deleted";
-	}
+    @Override
+    public String deleteById(Long id) {
+        if (tourPackageRepository.existsById(id)) {
+            tourPackageRepository.deleteById(id);
+            return "Package deleted successfully.";
+        }
+        throw new RuntimeException("Package not found with id " + id);
+    }
 
-
-
-	@Override
-	public List<TourPackage> getAllPackages() {
-		return tourPackageRepository.findAll();
-	}
-	
-	
-
+    @Override
+    public List<TourPackage> getAllPackages() {
+        return tourPackageRepository.findAll();
+    }
 }

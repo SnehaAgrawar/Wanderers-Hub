@@ -13,5 +13,5 @@ public interface UserService {
     void deleteUser(Long id);
     List<UserDTO> getAllUsers();
     Optional<User> login(String email, String password);
-    Optional<User> findByEmail(String email);
+    UserDTO findByEmail(String email);
 }

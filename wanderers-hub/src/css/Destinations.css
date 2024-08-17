@@ -1,20 +1,15 @@
-/* Destinations.css */
-
-/* General container styling */
-.wrapper{
-  padding: 10px;
-  width: 100%;
+.destinations-section {
+  padding: 60px 0;
+  background-color: #f8f9fa;
 }
 
-
-.grid {
-  padding: 20px;
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
+.destinations-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 50px;
+  font-weight: bold;
+  color: #333;
 }
 
-/* Card styling */
 .card {
   border: none;
   border-radius: 15px;
@@ -29,75 +24,35 @@
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
-/* Card image styling */
 .card img {
-  height: 200px;
+  height: 250px;
   object-fit: cover;
-  border-bottom: 5px solid #007bff;
 }
 
-/* Card body styling */
 .card-body {
   padding: 20px;
   text-align: center;
 }
 
-/* Card title styling */
 .card-title {
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 10px;
-  color: #333;
 }
 
-/* Card text (state) styling */
-.grid {
-  padding: 0; /* Remove padding */
-  margin: 0; /* Remove margin */
-  width: 100vw; /* Full viewport width */
-  max-width: 100%; /* Ensure no max-width constraint */
+.card-text {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 20px;
 }
 
-/* Button styling */
 .card .btn-primary {
-  background-color: #007bff;
-  border: none;
-  border-radius: 25px;
   padding: 10px 20px;
   font-size: 1rem;
+  border-radius: 25px;
   transition: background-color 0.3s ease;
 }
 
 .card .btn-primary:hover {
   background-color: #0056b3;
-}
-
-/* Responsive layout */
-@media (max-width: 992px) {
-  .col-md-4 {
-      flex: 0 0 48%;
-      max-width: 48%;
-  }
-}
-
-@media (max-width: 768px) {
-  .col-md-4 {
-      flex: 0 0 100%;
-      max-width: 100%;
-  }
-}
-
-/* Additional styling */
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f8f9fa;
-  color: #333;
-  margin: 0;
-  padding: 0;
-}
-
-h1 {
-  text-align: center;
-  margin-top: 20px;
-  color: #007bff;
 }

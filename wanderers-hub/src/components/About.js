@@ -18,7 +18,7 @@ const About = () => {
             <br />
             <div className="about-container" style={{ backgroundImage: `url(${descImg})` }}>
                 <div className="overlay">
-                    <div className="container py-5">
+                    <div className>
                         <div className="row text-center">
                             <div className="col-lg-3 col-md-6 mb-4">
                                 {/* <img src="path-to-logo.png" alt="Logo" className="img-fluid mb-3" /> */}

@@ -1,16 +1,17 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import '../css/Footer.css';
 
 function Footer() {
     return (
-        <footer className="bg-dark text-white py-4">
-            <Container className="text-center">
-                <p>&copy; 2024 Wanderer's Hub. All rights reserved.</p>
-                <div className="social-icons">
-                    {/* Add social media icons if needed */}
-                </div>
-            </Container>
+        <footer className="footer bg-dark text-white pt-4">
+            <Row className="justify-content-center text-center">
+                <Col md={12}>
+                    <h5>Wanderer's Hub</h5>
+                    <p>Your ultimate travel companion.</p>
+                    <p>&copy; 2024 Wanderer's Hub. All Rights Reserved.</p>
+                </Col>
+            </Row>
         </footer>
     );
 }
