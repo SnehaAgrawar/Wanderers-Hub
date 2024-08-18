@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import NavigationBar from './Navbar';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Container, Form } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
@@ -63,6 +64,7 @@ const Booking = () => {
 
     return (
         <Container className="booking-container">
+            <NavigationBar />
             <h2>Confirm Booking</h2>
             <Form>
                 {/* <Form.Group controlId="formBasicBookingId">

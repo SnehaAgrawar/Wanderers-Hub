@@ -15,8 +15,6 @@ import Invoice from './components/Invoice';
 import Payment from './components/Payment';
 import Reviews from './components/Reviews';
 import About from './components/About';
-// import Test from './components/Test';
-// import Profile from './components/Profile';
 
 function App() {
   return (
@@ -33,12 +31,9 @@ function App() {
           <Route path="/wanderershub/destinations" element={<Destinations />} />
           <Route path="/wanderershub/bookings/:pkgId" element={<Bookings />} />
           <Route path="/wanderershub/package/:pkgId" element={<PackageDetail />} />
-          <Route path="/wanderershub/packages" element={<DestinationPackages />} />
-          <Route path="/wanderershub/invoice/:bookingId" element={<Invoice />} />
-          <Route path="/wanderershub/payment/:bookingId" element={<Payment />} />
+          <Route path="/invoice/:bookingId" element={<Invoice />} /> {/* Consistent parameter name */}
+          <Route path="/wanderershub/payment/:bookingId" element={<Payment />} /> {/* Consistent parameter name */}
           <Route path="/wanderershub/reviews" element={<Reviews />} />
-          {/* <Route path="/wanderershub/test" element={<Test />} />
-          <Route path="/wanderershub/profile" element={<Profile />} /> */}
         </Routes>
       </Router>
     </AuthProvider>

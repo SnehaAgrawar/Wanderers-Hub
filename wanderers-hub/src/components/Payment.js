@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import NavigationBar from './Navbar';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../css/Payment.css';
 
 function Payment() {
   const navigate = useNavigate();
-  const { booking_id } = useParams(); // Get booking_id from the URL parameters
+  const { bookingId } = useParams(); // Use the correct parameter name
 
   const [paymentDetails, setPaymentDetails] = useState({
-    booking_id: booking_id, // Use booking_id from useParams
-    amount: '', // Payment amount
-    payment_method: '', // Payment method
-    status: 'Pending', // Default payment status
-    date: new Date().toISOString().split('T')[0] // Default to today's date
+    booking_id: bookingId, // Use bookingId from useParams
+    amount: '',
+    payment_method: '',
+    status: 'Pending',
+    date: new Date().toISOString().split('T')[0]
   });
 
   const handleChange = (e) => {
@@ -24,7 +25,7 @@ function Payment() {
     e.preventDefault();
     axios.post('http://localhost:8080/payments', paymentDetails)
       .then(response => {
-        navigate(`/invoice/${booking_id}`); // Redirect to invoice page after successful payment
+        navigate(`/invoice/${bookingId}`); // Ensure bookingId is passed correctly
       })
       .catch(error => {
         console.error("There was an error processing the payment!", error);
@@ -33,12 +34,9 @@ function Payment() {
 
   return (
     <div className="container mt-5 payment-container">
+      <NavigationBar />
       <h2>Payment</h2>
       <form onSubmit={handleSubmit}>
-        {/* <div className="form-group">
-          <label>Booking ID</label>
-          <input type="text" className="form-control" name="booking_id" value={paymentDetails.booking_id} readOnly />
-        </div> */}
         <div className="form-group">
           <label>Amount</label>
           <input type="text" className="form-control" name="amount" value={paymentDetails.amount} onChange={handleChange} required />
